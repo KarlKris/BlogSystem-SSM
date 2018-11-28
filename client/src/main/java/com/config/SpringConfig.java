@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 /**
- * Spring的配置类
+ * Spring的配置类 在SSM框架中对应spring-mybatis.xml
  **/
 
 @Configuration  //表明此类是配置类

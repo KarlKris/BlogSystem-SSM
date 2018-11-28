@@ -1,13 +1,13 @@
 package com.config;
 
+import com.interceptor.AuthorityInterceptor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
@@ -17,11 +17,16 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-
+/**
+ *  对应Spring-Mvc-xml文件
+ **/
 @Configuration
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter{
 
+    /**
+     *  配置静态资源
+     **/
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // TODO Auto-generated method stub
@@ -29,7 +34,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/resources/*");
     }
 
-
+    /**
+     *  配置HTML视图第1步：配置模板解析器
+     **/
     @Bean
     public ITemplateResolver templateResolver() {
         WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
@@ -41,6 +48,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         return templateResolver;
     }
 
+    /**
+     *  配置HTML视图第2步：配置模板引擎
+     **/
     @Bean
     public TemplateEngine templateEngine(ITemplateResolver templateResolver) {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -48,6 +58,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         return templateEngine;
     }
 
+    /**
+     *  配置HTML视图第3步：配置视图解析器
+     **/
     @Bean
     public ViewResolver viewResolver(TemplateEngine templateEngine) {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
@@ -56,6 +69,12 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         return viewResolver;
     }
 
-
-
+    /**
+     *  添加拦截器
+     **/
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //在这里注册拦截器
+        registry.addInterceptor(new AuthorityInterceptor());
+    }
 }
