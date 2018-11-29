@@ -3,10 +3,7 @@ package com.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -29,7 +26,7 @@ public class SpringConfig {
     /**
      * 配置阿里druid数据源
      **/
-    @Bean
+    @Bean  //默认是单例创建
     public DataSource dataSource(PropertiesConfig propertiesConfig){
         DruidDataSource druidDataSource=new DruidDataSource();
         druidDataSource.setUsername(propertiesConfig.getUsername());
@@ -58,6 +55,10 @@ public class SpringConfig {
         return dataSourceTransactionManager;
     }
 
+    /**
+     * 引入配置文件（application.properties）时所要用到的类
+     * 作用：将占位符指向的配置信息（如数据库）放在bean中定义的工具。
+     **/
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
         return new PropertySourcesPlaceholderConfigurer();

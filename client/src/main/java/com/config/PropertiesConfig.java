@@ -20,7 +20,7 @@ public class PropertiesConfig {
     @Value("${spring.datasource.password}")
     private String password;
 
-    @Value("spring.datasource.driver")
+    @Value("${spring.datasource.driver}")
     private String driver;
 
     @Value("${mybatis.type.alias.package}")
